@@ -17,22 +17,17 @@ const app = express();
 // ================= Connect Database =================
 connectDB();
 
-// ================= CORS =================
+// ================= Middleware =================
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "https://marketpulse-frontend-01nu.onrender.com",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
 
-// Handle preflight requests
-app.options("*", cors());
-
-// ================= Middleware =================
 app.use(express.json());
 
 // ================= Static Files =================
@@ -41,7 +36,7 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
-// ================= API Routes =================
+// ================= Routes =================
 app.use("/api/auth", authRoutes);
 app.use("/api/commodity", commodityRoutes);
 app.use("/api/products", productRoutes);
@@ -49,7 +44,7 @@ app.use("/api/markets", marketRoutes);
 app.use("/api/prices", priceRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// ================= Home Route =================
+// ================= Home =================
 app.get("/", (req, res) => {
   res.send("Welcome to MarketPulse Backend 🚀");
 });
