@@ -1,10 +1,18 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+
+// Create uploads/products folder if it doesn't exist
+const uploadPath = path.join(__dirname, "../uploads/products");
+
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 // Storage Configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/products");
+    cb(null, uploadPath);
   },
 
   filename: (req, file, cb) => {
@@ -22,16 +30,13 @@ const storage = multer.diskStorage({
 
 // Allow only image files
 const fileFilter = (req, file, cb) => {
-  const allowedTypes =
-    /jpeg|jpg|png|webp/;
+  const allowedTypes = /jpeg|jpg|png|webp/;
 
   const extname = allowedTypes.test(
     path.extname(file.originalname).toLowerCase()
   );
 
-  const mimetype = allowedTypes.test(
-    file.mimetype
-  );
+  const mimetype = allowedTypes.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
