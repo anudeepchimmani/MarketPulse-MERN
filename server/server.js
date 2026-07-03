@@ -17,17 +17,31 @@ const app = express();
 // ================= Connect Database =================
 connectDB();
 
+// ================= CORS =================
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://marketpulse-frontend-01nu.onrender.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
+// Handle preflight requests
+app.options("*", cors());
+
 // ================= Middleware =================
-app.use(cors());
 app.use(express.json());
 
-// Serve Uploaded Images
+// ================= Static Files =================
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))
 );
 
-// ================= Routes =================
+// ================= API Routes =================
 app.use("/api/auth", authRoutes);
 app.use("/api/commodity", commodityRoutes);
 app.use("/api/products", productRoutes);
@@ -35,7 +49,7 @@ app.use("/api/markets", marketRoutes);
 app.use("/api/prices", priceRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// ================= Default Route =================
+// ================= Home Route =================
 app.get("/", (req, res) => {
   res.send("Welcome to MarketPulse Backend 🚀");
 });
@@ -44,7 +58,5 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(
-    `🚀 Server is running on http://localhost:${PORT}`
-  );
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
