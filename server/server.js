@@ -20,10 +20,7 @@ connectDB();
 // ================= Middleware =================
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://marketpulse-frontend-01nu.onrender.com",
-    ],
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -44,14 +41,14 @@ app.use("/api/markets", marketRoutes);
 app.use("/api/prices", priceRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// ================= Home =================
+// ================= Home Route =================
 app.get("/", (req, res) => {
-  res.send("Welcome to MarketPulse Backend 🚀");
+  res.send("🚀 Welcome to MarketPulse Backend");
 });
 
 // ================= Start Server =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
